@@ -26,7 +26,7 @@
                     :name="item.name" 
                     @on-close="closePage"
                     @click.native="linkTo(item)"
-                    :closable="item.name==='home_index'?false:true"
+                    :closable="item.name==='home_index' || item.name==='other_index'?false:true"
                     :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
                 >{{ itemTitle(item) }}</Tag>
             </transition-group>
@@ -37,6 +37,8 @@
 <script>
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
+import Cookies from 'js-cookie';
+
 Vue.use(VueI18n);
 export default {
     name: 'tagsPageOpened',
@@ -139,7 +141,7 @@ export default {
             if (type === 'clearAll') {
                 this.$store.commit('clearAllTags');
                 this.$router.push({
-                    name: 'home_index'
+                    name: Cookies.get('access') == 0 ? 'home_index' : 'other_index'
                 });
             } else {
                 this.$store.commit('clearOtherTags', this);

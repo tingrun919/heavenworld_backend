@@ -30,11 +30,11 @@ export const otherRouter = {
     redirect: '/home',
     component: Main,
     children: [
-        { path: 'home', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') },
+        { path: 'home', access: 0, title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') },
         { path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: () => import('@/views/own-space/own-space.vue') },
 		{ path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/message/message.vue') },
-		{ path: 'product/:product_id', title: '商品详情', name: 'product-info', component: () => import('../views/products/products/component/product-detail.vue') },
-
+		{ path: 'other-index', access: 1, title: '首页', name: 'other_index', component: () => import('@/views/other-user-main/Other-user-main.vue') },
+		{ path: 'information/:information_id', title: '资讯详情', name: 'information-info', component: () => import('@/views/information/component/information-detail.vue') },
     ]
 };
 
@@ -157,15 +157,14 @@ export const appRouter = [
         ]
 	},
 	{
-        path: '/products',
+        path: '/informations',
         icon: 'grid',
-        name: 'products',
-        title: '商品',
+        name: 'information',
+        title: '资讯管理',
         component: Main,
         children: [
-			{ path: 'product', title: '商品管理', name: 'product', icon: 'grid', component: () => import('@/views/products/products/products.vue') },
-			// { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/form/work-flow/work-flow.vue') }
-
+			{ path: 'index', title: '资讯管理', name: 'information_index', icon: 'grid', component: () => import('@/views/information/information.vue') },
+			// { path: 'information', title: '资讯管理', name: 'product', icon: 'grid', component: () => import('@/views/products/products/products.vue') },
         ]
     },
 ];
