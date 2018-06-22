@@ -180,7 +180,6 @@
 	import Cookies from 'js-cookie';
 
 	export default {
-		name: 'artical-publish',
 		mixins: [informationService],
 		data() {
 			return {
