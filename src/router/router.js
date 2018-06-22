@@ -10,13 +10,6 @@ export const loginRouter = {
     component: () => import('@/views/login.vue')
 };
 
-
-export const preview = {
-    path: '/preview',
-    name: 'preview',
-    component: () => import('@/views/form/article-publish/preview.vue')
-};
-
 export const locking = {
     path: '/locking',
     name: 'locking',
@@ -36,6 +29,7 @@ export const otherRouter = {
 		{ path: 'other-index', access: 1, title: '首页', name: 'other_index', component: () => import('@/views/other-user-main/Other-user-main.vue') },
 		{ path: 'information/:information_id', title: '资讯详情', name: 'information-info', component: () => import('@/views/information/component/information-detail.vue') },
 		{ path: 'panoramic/new', title: '新增全景', name: 'panoramic_new', component: () => import('@/views/panoramic/component/panoramic-new.vue') },
+		{ path: 'festival/:festival_id', title: '节日详情', name: 'festival_info', component: () => import('@/views/festival/component/festival-new.vue') },
     ]
 };
 
@@ -194,7 +188,6 @@ export const appRouter = [
 export const routers = [
     loginRouter,
     otherRouter,
-    preview,
     locking,
     ...appRouter,
 ];
