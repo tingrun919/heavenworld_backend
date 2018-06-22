@@ -14,8 +14,9 @@ util.title = function (title) {
 };
 
 const ajaxUrl = env === 'development'
-	// ? 'http://192.168.10.196:8080/banaworld_admin/'
-	? 'http://192.168.10.76:8080/banaworld_admin/'
+	? 'http://192.168.10.196:8080/banaworld_admin/'
+	// ? 'http://192.168.10.76:8080/banaworld_admin/'
+	// ? 'http://39.107.78.100:8080/banaworld_admin/'
 	: env === 'production'
 		? 'https://www.url.com'
 		: 'https://debug.url.com';
@@ -194,7 +195,6 @@ util.setCurrentPath = function (vm, name) {
 				}
 			];
 		} else {
-			console.log(3)
 			let childObj = currentPathObj.children.filter((child) => {
 				return child.name === name;
 			})[0];

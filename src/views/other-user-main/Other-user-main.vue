@@ -5,7 +5,7 @@
 	<div>
 		<Row>
 			<Card>
-				<Button class="margin-left-10" size="large" type="success" icon="search">发布全景</Button>
+				<Button class="margin-left-10" size="large" type="success" icon="search" @click="releasePC">发布全景</Button>
 				<Button class="margin-left-10" size="large" type="success" icon="search" @click="releaseIM">发布资讯</Button>
 			</Card>
 		</Row>
@@ -53,14 +53,14 @@
 	import otheruserService from '../../service/otheruserService.js'
 	export default {
 		name: 'other_index',
-		mixins:[otheruserService],
+		mixins: [otheruserService],
 		data() {
 			return {
-				params:{
-					token:Cookies.get('token'),
-					thirdId:Cookies.get('orgid')
+				params: {
+					token: Cookies.get('token'),
+					thirdId: Cookies.get('orgid')
 				},
-				resultData:[],
+				resultData: [],
 				showInfo: false,
 				other_user: [
 					{
@@ -138,46 +138,26 @@
 				order_data: [],
 			};
 		},
-		beforeMount(){
+		beforeMount() {
 			this.getUserinfo(this.params).then(res => {
 				this.resultData = res
 			})
 		},
 		methods: {
-			// init() {
-			// 	let index = 1
-			// 	let buyer = '';
-			// 	let addr = '';
-			// 	let time = '';
-			// 	let state = '';
-			// 	switch (index) {
-			// 		case 1: buyer = 'Arasn'; addr = '北京市东直门外大街39号院2号楼航空服务大厦'; time = '2017年10月20日 13：33：24'; state = '已付款'; break;
-			// 		case 2: buyer = 'Lison'; addr = '北京市东直门外大街39号院2号楼航空服务大厦'; time = '2017年10月21日 19：13：24'; state = '已付款'; break;
-			// 		case 3: buyer = 'lili'; addr = 'TalkingData总部'; time = '2017年10月12日 10：39：24'; state = '待收货'; break;
-			// 		case 4: buyer = 'lala'; addr = '国家统计局'; time = '2017年8月20日 11：45：24'; state = '已收货'; break;
-			// 	}
-			// 	let order = {
-			// 		order_id: this.$route.params.order_id,
-			// 		buyer: buyer,
-			// 		addr: addr,
-			// 		time: time,
-			// 		state: state
-			// 	};
-			// 	this.order_data = [order];
-			// },
+			//发布资讯
 			releaseIM() {
 				let argu = { information_id: 'new' };
 				this.$router.push({
 					name: 'information-info',
 					params: argu
 				});
+			},
+			//发布全景
+			releasePC(){
+				this.$router.push({
+					name: 'panoramic_new',
+				});
 			}
 		},
-		// mounted() {
-		// 	this.init();
-		// },
-		// activated() {
-		// 	this.init();
-		// }
 	};
 </script>

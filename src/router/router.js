@@ -35,32 +35,12 @@ export const otherRouter = {
 		{ path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/message/message.vue') },
 		{ path: 'other-index', access: 1, title: '首页', name: 'other_index', component: () => import('@/views/other-user-main/Other-user-main.vue') },
 		{ path: 'information/:information_id', title: '资讯详情', name: 'information-info', component: () => import('@/views/information/component/information-detail.vue') },
+		{ path: 'panoramic/new', title: '新增全景', name: 'panoramic_new', component: () => import('@/views/panoramic/component/panoramic-new.vue') },
     ]
 };
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
-    {
-        path: '/access',
-        icon: 'key',
-        name: 'access',
-        title: '权限管理',
-        component: Main,
-        children: [
-            { path: 'index', title: '权限管理', name: 'access_index', component: () => import('@/views/access/access.vue') }
-        ]
-    },
-    {
-        path: '/access-test',
-        icon: 'lock-combination',
-        title: '权限测试页',
-        name: 'accesstest',
-        access: 0,
-        component: Main,
-        children: [
-            { path: 'index', title: '权限测试页', name: 'accesstest_index', access: 0, component: () => import('@/views/access/access-test.vue') }
-        ]
-    },
     {
         path: '/international',
         icon: 'earth',
@@ -144,18 +124,6 @@ export const appRouter = [
             }
         ]
     },
-    {
-        path: '/form',
-        icon: 'android-checkbox',
-        name: 'form',
-        title: '表单编辑',
-        component: Main,
-        children: [
-            { path: 'artical-publish', title: '文章发布', name: 'artical-publish', icon: 'compose', component: () => import('@/views/form/article-publish/article-publish.vue') },
-            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/form/work-flow/work-flow.vue') }
-
-        ]
-	},
 	{
         path: '/informations',
         icon: 'grid',
@@ -164,7 +132,60 @@ export const appRouter = [
         component: Main,
         children: [
 			{ path: 'index', title: '资讯管理', name: 'information_index', icon: 'grid', component: () => import('@/views/information/information.vue') },
-			// { path: 'information', title: '资讯管理', name: 'product', icon: 'grid', component: () => import('@/views/products/products/products.vue') },
+        ]
+	},
+	{
+        path: '/panoramics',
+        icon: 'grid',
+        name: 'panoramic',
+        title: '全景管理',
+        component: Main,
+        children: [
+			{ path: 'index', title: '全景管理', name: 'panoramic_index', icon: 'grid', component: () => import('@/views/panoramic/panoramic.vue') },
+        ]
+	},
+	{
+        path: '/robots',
+        icon: 'grid',
+        name: 'robot',
+        title: '机器人管理',
+		component: Main,
+		access: 0,
+        children: [
+			{ path: 'robot_index', title: '机器人列表', name: 'robot_index', icon: 'grid', component: () => import('@/views/robot/robot.vue') },
+			{ path: 'comment_model', title: '回复模版管理', name: 'comment_model', icon: 'grid', component: () => import('@/views/robot/comment_model.vue') },
+        ]
+	},
+	{
+        path: '/categorys',
+        icon: 'grid',
+        name: 'category',
+        title: '分类管理',
+        component: Main,
+        children: [
+			{ path: 'category_panoramic', title: '全景分类', name: 'category_panoramic', icon: 'grid', component: () => import('@/views/category/category_panoramic.vue') },
+			{ path: 'category_information', title: '资讯分类', name: 'category_information', icon: 'grid', component: () => import('@/views/category/category_information.vue') },
+        ]
+	},
+	{
+        path: '/search',
+        icon: 'grid',
+        name: 'search',
+        title: '搜索管理',
+        component: Main,
+        children: [
+			{ path: 'hotword', title: '设置热搜', name: 'hotword', icon: 'grid', component: () => import('@/views/search/hotword.vue') },
+			{ path: 'shield', title: '搜索屏蔽词管理', name: 'shield', icon: 'grid', component: () => import('@/views/search/shield.vue') },
+        ]
+	},
+	{
+        path: '/festivals',
+        icon: 'grid',
+        name: 'festival',
+        title: '节日管理',
+        component: Main,
+        children: [
+			{ path: 'festival_index', title: '节日管理', name: 'festival_index', icon: 'grid', component: () => import('@/views/festival/festival.vue') },
         ]
     },
 ];
