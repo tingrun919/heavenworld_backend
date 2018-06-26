@@ -36,16 +36,6 @@ export const otherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
     {
-        path: '/international',
-        icon: 'earth',
-        title: {i18n: 'international'},
-        name: 'international',
-        component: Main,
-        children: [
-            { path: 'index', title: {i18n: 'international'}, name: 'international_index', component: () => import('@/views/international/international.vue') }
-        ]
-    },
-    {
         path: '/component',
         icon: 'social-buffer',
         name: 'component',
@@ -117,7 +107,18 @@ export const appRouter = [
                 component: () => import('@/views/my-components/split-pane/split-pane-page.vue')
             }
         ]
-    },
+	},
+	{
+        path: '/otherUsers',
+        icon: 'grid',
+        name: 'otherUser',
+		title: '第三方管理',
+		access: 0,
+        component: Main,
+        children: [
+			{ path: 'index', title: '第三方管理', name: 'otherUser_index', icon: 'grid', component: () => import('../views/other-user-main/Other-user-index.vue') },
+        ]
+	},
 	{
         path: '/informations',
         icon: 'grid',

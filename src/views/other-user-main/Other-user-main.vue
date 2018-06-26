@@ -22,15 +22,6 @@
 			<Card>
 				<p slot="title">
 					<Icon type="compose"></Icon>
-					子账号
-				</p>
-				<Table :columns="child_number" stripe border :data="resultData"></Table>
-			</Card>
-		</Row>
-		<Row>
-			<Card>
-				<p slot="title">
-					<Icon type="compose"></Icon>
 					全景
 				</p>
 				<Table :columns="panoramic_col" stripe border :data="resultData"></Table>
@@ -76,18 +67,6 @@
 					{
 						title: '联系方式',
 						key: 'thirdPhone',
-						align: 'center'
-					},
-					{
-						title: '操作',
-						key: 'action',
-						align: 'center'
-					},
-				],
-				child_number: [
-					{
-						title: '子账号数量',
-						key: 'sysstaffCount',
 						align: 'center'
 					},
 					{
