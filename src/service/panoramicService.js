@@ -23,7 +23,7 @@ export default {
 			})
 		},
 		PanoramicApi(param){
-			return Util.get('test/makeKrpano',param).then(res => {
+			return Util.get('krpano/makeKrpano',param).then(res => {
 				return res.data
 			})
 		}

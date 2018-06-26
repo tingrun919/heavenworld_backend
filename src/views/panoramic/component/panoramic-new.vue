@@ -40,17 +40,17 @@
 				</p>
 				<p class="margin-top-10">
 					<Icon type="android-time"></Icon>作品标题：
-					<Input v-model="uploadCode.title" placeholder="请输入..." style="width: 150px"></Input>
+					<Input v-model="title" placeholder="请输入..." style="width: 150px"></Input>
 				</p>
 				<p class="margin-top-10">
 					<Icon type="android-time"></Icon>全景分类：
-					<Select style="width:150px" clearable>
+					<Select style="width:150px" v-model="typePId" clearable>
 						<Option v-for="item in category" :value="item.typeId" :key="item.typeId">{{ item.typeName }}</Option>
 					</Select>
 				</p>
 				<Row class="margin-top-20 publish-button-con">
 					<span class="publish-button">
-						<Button @click="handlePanoramic" long icon="ios-checkmark" type="primary">发布</Button>
+						<Button @click="handlePanoramic" long icon="ios-checkmark" type="primary">生成全景</Button>
 					</span>
 				</Row>
 			</Card>
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+	import Cookies from 'js-cookie';
 	import panoramicService from '../../../service/panoramicService.js'
 	export default {
 		mixins: [panoramicService],
@@ -68,6 +69,8 @@
 				uploadCode: '',
 				uploadList: [],
 				category: [],
+				typePId:'',
+				title:'',
 			};
 		},
 		beforeMount() {
@@ -90,9 +93,11 @@
 				var value = this.getPanoramicValue()
 				var param = {
 					file:this.uploadList[0].file,
-					title:'test',
+					title:this.title,
 					name:name,
-					value:value
+					value:value,
+					token:Cookies.get('token'),
+					type:this.typePId,
 				}
 				this.PanoramicApi(param).then(res => {
 					console.log(res)
