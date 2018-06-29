@@ -82,6 +82,11 @@ module.exports = {
 			loaders: ['babel-loader'],
 			threadPool: happyThreadPool,
 			verbose: true
+		}),
+
+		new webpack.ProvidePlugin({
+			$: "jquery",
+			jQuery: "jquery"
 		})
 	],
 	resolve: {
