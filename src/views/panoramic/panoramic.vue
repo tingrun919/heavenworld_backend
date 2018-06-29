@@ -40,10 +40,10 @@
 				category: [],//全部类型
 				page: {
 					page: 1,//当前页数
-					pagesize: 5,//每页显示条数
+					pagesize: 10,//每页显示条数
 					panoid: '',//标题搜索条件
 					typeid: '',//一级分类model
-					orgid: '',//二级分类model
+					orgid: Cookies.get('orgid'),//二级分类model
 				},
 				loading: true,//表格加载动画
 				fCategory: [],//一级分类
@@ -172,9 +172,9 @@
 									},
 									on: {
 										click: () => {
-											let argu = { information_id: params.row.infoId };
+											let argu = { panoramic_id: params.row.panoId };
 											this.$router.push({
-												name: 'information-info',
+												name: 'panoramic_edit',
 												params: argu
 											});
 										}
@@ -190,7 +190,7 @@
 									},
 									on: {
 										click: () => {
-											this.handleRemove(params.row.infoId)
+											this.handleRemove(params.row.panoId)
 										}
 									}
 								}, '删除')

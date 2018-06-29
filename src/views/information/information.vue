@@ -58,6 +58,8 @@
 					infoTypeId: '',//二级分类model
 					infoState: '',//是否发布
 					infoIftop: '',//是否置顶
+					orgid:Cookies.get('orgid'),
+					token:Cookies.get('token'),
 				},
 				loading: true,//表格加载动画
 				fCategory: [],//一级分类
