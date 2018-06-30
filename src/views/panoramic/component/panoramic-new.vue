@@ -4,12 +4,15 @@
 </style>
 <template>
 	<div>
+		<Modal v-model="modal6" title="Title" :loading="loading" @on-ok="asyncOK">
+			<p>正在生成中，请关闭此页面。</p>
+		</Modal>
 		<Row>
 			<Col span="18">
 			<Card>
 				<Row>
 					<Col span="18">
-					<Upload multiple :on-success="handleSuccess" :action="`http://39.107.78.100:8080/banaworld_admin/krpano/picUpload?code=${uploadCode}`">
+					<Upload :on-success="handleSuccess" :action="`http://39.107.78.100:8080/banaworld_admin/krpano/picUpload?code=${uploadCode}`">
 						<Button type="primary" icon="ios-cloud-upload-outline">选择2:1全景图</Button>
 					</Upload>
 					</Col>
@@ -26,10 +29,10 @@
 					<a href="#" slot="extra" @click.prevent="changeLimit">
 						<Icon type="close"></Icon>
 					</a>
-					<img :src="item.url" width="100" height="100">
+					<img :src="item.url" height="100">
 					<Input style="padding-left: 5%;" v-model="item.name"></Input>
-					</Card>
-					</Col>
+				</Card>
+				</Col>
 			</Row>
 			</Col>
 			<Col span="6" class="padding-left-10">
@@ -50,7 +53,7 @@
 				</p>
 				<Row class="margin-top-20 publish-button-con">
 					<span class="publish-button">
-						<Button @click="handlePanoramic" long icon="ios-checkmark" type="primary">生成全景</Button>
+						<Button @click="handlePanoramic" :disabled="disabled" long icon="ios-checkmark" type="primary">生成全景</Button>
 					</span>
 				</Row>
 			</Card>
@@ -69,8 +72,11 @@
 				uploadCode: '',
 				uploadList: [],
 				category: [],
-				typePId:'',
-				title:'',
+				typePId: '',
+				title: '',
+				disabled: false,
+				modal6: false,
+				loading: true
 			};
 		},
 		beforeMount() {
@@ -88,34 +94,64 @@
 				this.uploadList.push(res.data)
 			},
 			//生成全景
-			handlePanoramic(){
+			handlePanoramic() {
+				this.disabled = true
+				this.modal6 = true
 				var name = this.getPanoramicName()
 				var value = this.getPanoramicValue()
 				var param = {
-					file:this.uploadList[0].file,
-					title:this.title,
-					name:name,
-					value:value,
-					token:Cookies.get('token'),
-					type:this.typePId,
+					file: this.uploadList[0].file,
+					title: this.title,
+					name: name,
+					value: value,
+					token: Cookies.get('token'),
+					type: this.typePId,
 				}
 				this.PanoramicApi(param).then(res => {
 					console.log(res)
 				})
 			},
-			getPanoramicName(){
+			getPanoramicName() {
 				var result = ''
-				for(var item in this.uploadList){
+				for (var item in this.uploadList) {
 					result += this.uploadList[item].name + ','
 				}
 				return result
 			},
-			getPanoramicValue(){
+			getPanoramicValue() {
 				var result = ''
-				for(var item in this.uploadList){
+				for (var item in this.uploadList) {
 					result += this.uploadList[item].value + ','
 				}
 				return result
+			},
+			asyncOK() {
+				this.modal6 = false
+				this.closePage('panoramic_new')
+			},
+			closePage(name) {
+				let pageOpenedList = this.$store.state.app.pageOpenedList;
+				let lastPageObj = pageOpenedList[0];
+				if (this.currentPageName === name) {
+					let len = pageOpenedList.length;
+					for (let i = 1; i < len; i++) {
+						if (pageOpenedList[i].name === name) {
+							if (i < (len - 1)) {
+								lastPageObj = pageOpenedList[i + 1];
+							} else {
+								lastPageObj = pageOpenedList[i - 1];
+							}
+							break;
+						}
+					}
+				}
+				this.$store.commit('removeTag', name);
+				this.$store.commit('closePage', name);
+				pageOpenedList = this.$store.state.app.pageOpenedList;
+				localStorage.pageOpenedList = JSON.stringify(pageOpenedList);
+				this.$router.push({
+					name: 'panoramic',
+				});
 			},
 		},
 	};

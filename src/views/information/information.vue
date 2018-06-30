@@ -46,6 +46,7 @@
 		mixins: [informationService],
 		data() {
 			return {
+				ifThird:Cookies.get('orgid'),
 				resultValue: [],//列表数据
 				initResultValue: [],//列表数据
 				pageTotal: null,//总页数
@@ -58,7 +59,7 @@
 					infoTypeId: '',//二级分类model
 					infoState: '',//是否发布
 					infoIftop: '',//是否置顶
-					orgid:Cookies.get('orgid'),
+					orgid:Cookies.get('orgid') != 2 ? '' : Cookies.get('orgid'),
 					token:Cookies.get('token'),
 				},
 				loading: true,//表格加载动画
@@ -159,7 +160,8 @@
 								props: {
 									type: 'text',
 									size: 'small',
-									icon: params.row.infoIftop == 1 ? 'checkmark' : 'close'
+									icon: params.row.infoIftop == 1 ? 'checkmark' : 'close',
+									disabled: this.ifThird == 2
 								},
 								style: {
 									fontSize: '20px',
