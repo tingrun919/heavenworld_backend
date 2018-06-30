@@ -33,7 +33,7 @@ module.exports = merge(webpackBaseConfig, {
         new webpack.optimize.CommonsChunkPlugin({
             // name: 'vendors',
             // filename: 'vendors.[hash].js'
-            name: ['vender-exten', 'vender-base', 'tour-panoramic', 'test-pano'],
+            name: ['vender-exten', 'vender-base'],
             minChunks: Infinity
         }),
         new webpack.DefinePlugin({
