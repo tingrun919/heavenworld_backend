@@ -223,6 +223,10 @@
 			},
 			//是否置顶
 			handleIfTop(infoId, status) {
+				if(status == -1){
+					this.$Message.error('正在生成，请稍后再试！');
+					return;
+				}
 				var param = {
 					panoid: infoId,
 					token: Cookies.get("token"),
