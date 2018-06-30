@@ -13,7 +13,8 @@ module.exports = {
 		'vender-base': '@/vendors/vendors.base.js',
 		'vender-exten': '@/vendors/vendors.exten.js',
 		'tour':'@/vendors/tour.js',
-		'test':'@/vendors/test.js'
+		'test':'@/vendors/test.js',
+		// 'jquery':'https://cdn.staticfile.org/jquery/3.2.1/jquery.js'
 	},
 	output: {
 		path: path.resolve(__dirname, '../dist/dist')
