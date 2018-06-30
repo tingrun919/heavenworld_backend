@@ -88,6 +88,12 @@
 </style>
 <template>
 	<div>
+		<Modal v-model="modal6" title="操作确认" @on-ok="asyncOK">
+			<p>确认保存吗？</p>
+		</Modal>
+		<Modal v-model="modal7" title="操作确认" @on-ok="asyncOK7">
+				<p>确认保存吗？</p>
+		</Modal>
 		<div id="temp" style="display:none"></div>
 		<input type="hidden" id="comment-athv" />
 		<Modal title="新增" @on-ok="handleAddAction" v-model="commentShowAdd" class-name="vertical-center-modal">
@@ -112,7 +118,7 @@
 						<Icon type="paper-airplane"></Icon>
 						基础设置
 					</p>
-					<a href="#" slot="extra" @click.prevent="handleSavePanoramic">
+					<a href="#" slot="extra" @click.prevent="modal6 = true">
 						<Icon type="checkmark"></Icon>
 						保存
 					</a>
@@ -550,7 +556,7 @@
 						</Select>
 					</Card>
 					<Row class="margin-top-10 publish-button-con">
-						<Button @click="handleUpdate" icon="ios-checkmark" long type="success">保存</Button>
+						<Button @click="modal7 = true" icon="ios-checkmark" long type="success">保存</Button>
 					</Row>
 					</Col>
 				</Row>
@@ -589,6 +595,8 @@
 				actionDesc: '',
 				actionName: '',
 				showMusicModal:false,
+				modal6:false,
+				modal7:false,
 				actionList: [
 					{
 						value: '1',
@@ -760,7 +768,9 @@
 					},500)
 					this.resultData = res.banaPanoFunction
 					this.resultData2 = res.banaPanoPerson
-					this.handleImg(res.panoPicture)
+					if(res.panoPicture){
+						this.handleImg(res.panoPicture)
+					}
 				})
 			},
 			handleImg(arg) {
@@ -899,6 +909,14 @@
 					this.fetchList()
 				})
 			},
+			asyncOK() {
+				this.modal6 = false
+				this.handleSavePanoramic()
+			},
+			asyncOK7() {
+				this.modal7 = false
+				this.handleUpdate()
+			},
 			handleSavePanoramic() {
 				var addressName = '', long = '', dim = '';
 				for (let index = 0; index < this.cityList.length; index++) {
@@ -935,7 +953,7 @@
 					phone: this.resultValue.panoPhone
 				}
 				this.savePanoramicApi(params).then(() => {
-					this.fetchList()
+					this.closePage('panoramic_edit')
 				})
 			},
 			loadingHot(name) {
@@ -982,7 +1000,7 @@
 					linkedscene: this.modelpanoramic,
 				}
 				this.handleAddcomment(params).then(res => {
-					console.log(res)
+						this.closePage('panoramic_edit')
 				})
 			},
 			handleAddMusic(){
@@ -1016,7 +1034,31 @@
 						this.resultValueMusic = res
 					})
 				})
-			}
+			},
+			closePage(name) {
+				let pageOpenedList = this.$store.state.app.pageOpenedList;
+				let lastPageObj = pageOpenedList[0];
+				if (this.currentPageName === name) {
+					let len = pageOpenedList.length;
+					for (let i = 1; i < len; i++) {
+						if (pageOpenedList[i].name === name) {
+							if (i < (len - 1)) {
+								lastPageObj = pageOpenedList[i + 1];
+							} else {
+								lastPageObj = pageOpenedList[i - 1];
+							}
+							break;
+						}
+					}
+				}
+				this.$store.commit('removeTag', name);
+				this.$store.commit('closePage', name);
+				pageOpenedList = this.$store.state.app.pageOpenedList;
+				localStorage.pageOpenedList = JSON.stringify(pageOpenedList);
+				this.$router.push({
+					name: 'panoramic',
+				});
+			},
 		}
 	}
 </script>
