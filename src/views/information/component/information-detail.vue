@@ -25,7 +25,7 @@
 						</div>
 						<Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']"
 						 :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload"
-						 multiple type="drag" action="http://192.168.10.76:8080/banaworld_admin/User/uploadAll?type=1" style="display: inline-block;width:58px;">
+						 multiple type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=1" style="display: inline-block;width:58px;">
 							<div style="width: 58px;height:58px;line-height: 58px;">
 								<Icon type="camera" size="20"></Icon>
 							</div>
@@ -45,7 +45,7 @@
 							</template>
 						</div>
 						<Upload ref="uploadVideo" :show-upload-list="false" :default-file-list="defaultListVideo" :on-success="handleSuccessVideo"
-						 :format="['mp4','mov']" :on-format-error="handleFormatError" type="drag" action="http://192.168.10.76:8080/banaworld_admin/User/uploadAll?type=3"
+						 :format="['mp4','mov']" :on-format-error="handleFormatError" type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=3"
 						 style="display: inline-block;width:58px;">
 							<div style="width: 58px;height:58px;line-height: 58px;">
 								<Icon type="camera" size="20"></Icon>
