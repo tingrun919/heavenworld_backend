@@ -755,9 +755,9 @@
 						name: res.panoAddress
 					}
 					this.cityList.push(params)
-					this.$nextTick(() => {
+					setTimeout(() => {
 						this.cityDefault = 'defalut'
-					})
+					},500)
 					this.resultData = res.banaPanoFunction
 					this.resultData2 = res.banaPanoPerson
 					this.handleImg(res.panoPicture)
