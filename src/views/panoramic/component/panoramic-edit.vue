@@ -123,7 +123,7 @@
 								<img :src="resultValue.panoMainpic" width="200" height="200">
 								<Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048"
 								 :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple
-								 type="drag" action="http://192.168.10.196:8080/banaworld_admin/User/uploadAll?type=1" style="display: inline-block;width:198px;">
+								 type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=1" style="display: inline-block;width:198px;">
 									<div style="width: 198px;height:198px;line-height: 198px;">
 										<Icon type="camera" size="20"></Icon>
 									</div>
@@ -168,7 +168,7 @@
 						</div>
 						<Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess2" :format="['jpg','jpeg','png']"
 						 :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload"
-						 multiple type="drag" action="http://192.168.10.196:8080/banaworld_admin/User/uploadAll?type=1" style="display: inline-block;width:98px;">
+						 multiple type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=1" style="display: inline-block;width:98px;">
 							<div style="width: 98px;height:98px;line-height: 98px;">
 								<Icon type="camera" size="20"></Icon>
 							</div>
