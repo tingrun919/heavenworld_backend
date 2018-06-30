@@ -56,6 +56,11 @@ module.exports = merge(webpackBaseConfig, {
         //      }
         // }),
         new CopyWebpackPlugin([
+			{
+				from: path.resolve(__dirname, '../static'),
+				to: 'static',
+				ignore: ['.*']
+			},
             {
                 from: 'td_icon.ico'
             },
