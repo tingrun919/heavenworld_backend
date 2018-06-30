@@ -25,7 +25,7 @@ module.exports = merge(webpackBaseConfig, {
             allChunks: true
         }),
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['vender-exten', 'vender-base'],
+            name: ['vender-exten', 'vender-base', 'tour-panoramic', 'test-pano'],
             minChunks: Infinity
         }),
         new HtmlWebpackPlugin({
