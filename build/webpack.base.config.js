@@ -12,8 +12,6 @@ module.exports = {
 		main: '@/main',
 		'vender-base': '@/vendors/vendors.base.js',
 		'vender-exten': '@/vendors/vendors.exten.js',
-		'tour-panoramic':'@/vendors/tour.panoramic.js',
-		'test-pano':'@/vendors/test.pano.js',
 	},
 	output: {
 		path: path.resolve(__dirname, '../dist/dist')
