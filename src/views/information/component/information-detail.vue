@@ -145,7 +145,7 @@
 					<Button @click="handleUpdate" :loading="publishLoading" icon="ios-checkmark" long type="success">保存</Button>
 				</Row>
 			</Card>
-			<Card>
+			<Card v-if="ifThird != 2">
 				<p slot="title">
 					<Icon type="paper-airplane"></Icon>
 					数据机器人
@@ -183,6 +183,7 @@
 		mixins: [informationService],
 		data() {
 			return {
+				ifThird:Cookies.get('orgid'),
 				resultData: [],
 				category: [],//全部类型
 				fCategory: [],//一级分类
@@ -225,7 +226,8 @@
 								h('Button', {
 									props: {
 										type: 'error',
-										size: 'small'
+										size: 'small',
+										disabled: this.ifThird == 2
 									},
 									style: {
 										marginRight: '5px'

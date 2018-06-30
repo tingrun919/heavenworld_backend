@@ -43,7 +43,7 @@
 					pagesize: 10,//每页显示条数
 					panoid: '',//标题搜索条件
 					typeid: '',//一级分类model
-					orgid: Cookies.get('orgid'),//二级分类model
+					orgid: Cookies.get('orgid') == 1 ? '' : Cookies.get('orgid')  ,//二级分类model
 				},
 				loading: true,//表格加载动画
 				fCategory: [],//一级分类
@@ -132,8 +132,8 @@
 						align: 'center',
 					},
 					{
-						title: '是否置顶',
-						key: 'panoRecommend',
+						title: '是否上架',
+						key: 'panoState',
 						align: 'center',
 						sortable: true,
 						render: (h, params) => {
@@ -141,15 +141,15 @@
 								props: {
 									type: 'text',
 									size: 'small',
-									icon: params.row.infoIftop == 1 ? 'checkmark' : 'close'
+									icon: params.row.panoState == 1 ? 'checkmark' : 'close'
 								},
 								style: {
 									fontSize: '20px',
-									color: params.row.infoIftop == 1 ? 'green' : 'red',
+									color: params.row.panoState == 1 ? 'green' : 'red',
 								},
 								on: {
 									click: () => {
-										this.handleIfTop(params.row.infoId, params.row.infoIftop)
+										this.handleIfTop(params.row.panoId, params.row.panoState)
 									}
 								}
 							});
@@ -180,20 +180,20 @@
 										}
 									}
 								}, Cookies.get('access') == 1 ? '编辑' : '查看'),
-								h('Button', {
-									props: {
-										type: 'error',
-										size: 'small'
-									},
-									style: {
-										marginRight: '5px'
-									},
-									on: {
-										click: () => {
-											this.handleRemove(params.row.panoId)
-										}
-									}
-								}, '删除')
+								// h('Button', {
+								// 	props: {
+								// 		type: 'error',
+								// 		size: 'small'
+								// 	},
+								// 	style: {
+								// 		marginRight: '5px'
+								// 	},
+								// 	on: {
+								// 		click: () => {
+								// 			this.handleRemove(params.row.panoId)
+								// 		}
+								// 	}
+								// }, '删除')
 							]);
 						}
 					}
@@ -224,14 +224,14 @@
 			//是否置顶
 			handleIfTop(infoId, status) {
 				var param = {
-					infoId: infoId,
+					panoid: infoId,
 					token: Cookies.get("token"),
-					infoIftop: status == 1 ? 0 : 1
+					state: status == 1 ? 0 : 1
 				}
 				this.updataIfTop(param).then(() => {
 					this.fetchList()
 				})
-			}
+			},
 		}
 	}
 </script>

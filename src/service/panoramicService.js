@@ -128,6 +128,17 @@ export default {
 				}
 				return result.data
 			})
+		},
+		updataIfTop(params){
+			return Util.get('krpano/updownKrpano', params).then(res => {
+				var result = res.data
+				if (result.code == 100000) {
+					this.$Message.success('修改成功！');
+				} else {
+					this.$Message.error(result.message);
+				}
+				return result.data
+			})
 		}
 	}
 }
