@@ -5,8 +5,12 @@
 	<div>
 		<Row>
 			<Card>
-				<span>标题名称：</span>
-				<Input v-model="page.infoTitle" placeholder="请输入标题名称" clearable style="width: 200px"></Input>
+				<span>标题名：</span>
+				<Input v-model="page.infoTitle" placeholder="请输入标题名" clearable style="width: 150px"></Input>
+				<!-- <span>发布人：</span> -->
+				<!-- <Select v-model="page.infoStaffId" style="width: 150px" clearable filterable remote :remote-method="remoteMethod" :loading="loading1">
+               		<Option v-for="(option, index) in userList" :value="option.staffId" :key="index">{{option.staffNickname}}</Option>
+            	</Select> -->
 				<span class="margin-left-10">一级分类：</span>
 				<Select v-model="page.typePId" clearable style="width:150px">
 						<Option v-for="item in fCategory" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -40,13 +44,14 @@
 </template>
 <script>
 	import informationService from '../../service/informationService.js';
+	import userService from '../../service/userService.js';
 	import Cookies from 'js-cookie';
 
 	export default {
-		mixins: [informationService],
+		mixins: [informationService,userService],
 		data() {
 			return {
-				ifThird:Cookies.get('orgid'),
+				ifThird: Cookies.get('orgid'),
 				resultValue: [],//列表数据
 				initResultValue: [],//列表数据
 				pageTotal: null,//总页数
@@ -59,13 +64,16 @@
 					infoTypeId: '',//二级分类model
 					infoState: '',//是否发布
 					infoIftop: '',//是否置顶
-					orgid:Cookies.get('orgid') != 2 ? '' : Cookies.get('orgid'),
-					token:Cookies.get('token'),
+					orgid: Cookies.get('orgid') != 2 ? '' : Cookies.get('orgid'),
+					token: Cookies.get('token'),
+					// infoStaffId:''
 				},
 				loading: true,//表格加载动画
+				loading1:false,
 				fCategory: [],//一级分类
 				sCategory: [],//二级分类
 				fDisabled: true,//二级分类是否启用
+				userList: [],
 				currentState: [//是否发布
 					{
 						value: '1',
@@ -292,14 +300,25 @@
 				})
 			},
 			//是否置顶
-			handleIfTop(infoId,status){
+			handleIfTop(infoId, status) {
 				var param = {
 					infoId: infoId,
 					token: Cookies.get("token"),
-					infoIftop:status == 1 ? 0 : 1
+					infoIftop: status == 1 ? 0 : 1
 				}
 				this.updataIfTop(param).then(() => {
 					this.fetchList()
+				})
+			},
+			remoteMethod(query){
+				var params = {
+					token: Cookies.get('token'),
+					staffNickname: query,
+					page:1,
+					pageSize:20,
+				}
+				this.getUserList(params).then(res => {
+					this.userList = res.list
 				})
 			}
 		}

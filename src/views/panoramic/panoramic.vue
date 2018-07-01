@@ -9,7 +9,7 @@
 				<span>标题名称：</span>
 				<Input v-model="page.infoTitle" placeholder="请输入商品名称" clearable style="width: 200px"></Input>
 				<span class="margin-left-10">分类：</span>
-				<Select v-model="page.infoIftop" clearable style="width:150px">
+				<Select v-model="page.typeid" clearable style="width:150px">
 						<Option v-for="item in category" :value="item.typeId" :key="item.typeId">{{ item.typeName }}</Option>
 					</Select>
 				<Button @click="fetchList" class="margin-left-10" type="primary" icon="search">查询</Button>
