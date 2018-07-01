@@ -41,7 +41,7 @@
 						page: 1,//当前页数
 						pageSize: 10,//每页显示条数
 						token: Cookies.get('token'),
-						type: 1,
+						type: 2,
 						keyword: '',
 						sort: '',
 					},

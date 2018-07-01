@@ -108,10 +108,14 @@
 			},
 			handleUpdateAndSave() {
 				this.resultData.token = Cookies.get('token')
-				if (this.$route.params.information_id == 'new') {
+				if (this.$route.params.festival_id == 'new') {
 					this.resultData.holTime = this.time
 					this.resultData.holContent = tinymce.activeEditor.getContent()
-					this.AddFestivalApi(this.resultData)
+					this.AddFestivalApi(this.resultData).then(res => {
+						if(res.code == 100000){
+							this.closePage('festival_info')
+						}
+					})
 				} else {
 					this.updateFestivalApi(this.resultData)
 				}
@@ -122,6 +126,30 @@
 					this.time = res[0].holTime
 					localStorage.editorContentF = res[0].holContent
 				})
+			},
+			closePage(name) {
+				let pageOpenedList = this.$store.state.app.pageOpenedList;
+				let lastPageObj = pageOpenedList[0];
+				if (this.currentPageName === name) {
+					let len = pageOpenedList.length;
+					for (let i = 1; i < len; i++) {
+						if (pageOpenedList[i].name === name) {
+							if (i < (len - 1)) {
+								lastPageObj = pageOpenedList[i + 1];
+							} else {
+								lastPageObj = pageOpenedList[i - 1];
+							}
+							break;
+						}
+					}
+				}
+				this.$store.commit('removeTag', name);
+				this.$store.commit('closePage', name);
+				pageOpenedList = this.$store.state.app.pageOpenedList;
+				localStorage.pageOpenedList = JSON.stringify(pageOpenedList);
+				this.$router.push({
+					name: 'festival',
+				});
 			},
 		},
 		destroyed() {

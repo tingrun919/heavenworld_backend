@@ -13,8 +13,9 @@
                     :open-names="openedSubmenuArr"
                     :menu-list="menuList">
                     <div slot="top" class="logo-con">
-                        <img v-show="!shrink"  src="../images/logo.jpg" key="max-logo" />
-                        <img v-show="shrink" src="../images/logo-min.jpg" key="min-logo" />
+						<span>VR新世界</span>
+                        <!-- <img v-show="!shrink"  src="../images/logo.jpg" key="max-logo" /> -->
+                        <!-- <img v-show="shrink" src="../images/logo-min.jpg" key="min-logo" /> -->
                     </div>
                 </shrinkable-menu>
             </scroll-bar>

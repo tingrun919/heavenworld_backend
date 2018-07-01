@@ -107,8 +107,8 @@
 			<Input v-model="personName" placeholder="请输入名称"></Input>
 		</Modal>
 		<Modal title="新增" @on-ok="handleAddMusic" v-model="showMusicModal" class-name="vertical-center-modal">
-			<Input class="margin-top-20" v-model="musicurl" placeholder="请输入新增音乐的名称"></Input>
-			<Input class="margin-top-20" v-model="musicdesc" placeholder="请输入新增音乐的网络地址"></Input>
+			<Input class="margin-top-20" v-model="musicdesc" placeholder="请输入新增音乐的名称"></Input>
+			<Input class="margin-top-20" v-model="musicurl" placeholder="请输入新增音乐的网络地址"></Input>
 		</Modal>
 		<Col span="24" class="demo-tabs-style1" style="background: #e3e8ee;padding:10px;">
 		<Tabs type="card" @on-click="loadingHot">
@@ -203,34 +203,6 @@
 							全景服务电话设置
 						</p>
 						<Input v-model="resultValue.panoPhone" placeholder="请输入全景服务电话"></Input>
-					</Card>
-					</Col>
-				</Row>
-				<Row :gutter="10">
-					<Col span="12">
-					<Card>
-						<p slot="title">
-							<Icon type="paper-airplane"></Icon>
-							全景附加功能设置
-						</p>
-						<a href="#" slot="extra" @click.prevent="commentShowAdd = true">
-							<Icon type="plus"></Icon>
-							新增
-						</a>
-						<can-edit-table @on-delete="handleRemove" v-model="resultData" :columns-list="tableColumns"></can-edit-table>
-					</Card>
-					</Col>
-					<Col span="12">
-					<Card>
-						<p slot="title">
-							<Icon type="paper-airplane"></Icon>
-							相关人物设置
-						</p>
-						<a href="#" slot="extra" @click.prevent="personShowAdd = true">
-							<Icon type="plus"></Icon>
-							新增
-						</a>
-						<can-edit-table @on-delete="handleRemovePerson" v-model="resultData2" :columns-list="tableColumns2"></can-edit-table>
 					</Card>
 					</Col>
 				</Row>
@@ -573,6 +545,36 @@
 					</Card>
 				</Row>
 			</Tab-pane>
+			<Tab-pane label="其它">
+					<Row :gutter="10">
+							<Col span="12">
+							<Card>
+								<p slot="title">
+									<Icon type="paper-airplane"></Icon>
+									全景附加功能设置
+								</p>
+								<a href="#" slot="extra" @click.prevent="commentShowAdd = true">
+									<Icon type="plus"></Icon>
+									新增
+								</a>
+								<can-edit-table @on-delete="handleRemove" v-model="resultData" :columns-list="tableColumns"></can-edit-table>
+							</Card>
+							</Col>
+							<Col span="12">
+							<Card>
+								<p slot="title">
+									<Icon type="paper-airplane"></Icon>
+									相关人物设置
+								</p>
+								<a href="#" slot="extra" @click.prevent="personShowAdd = true">
+									<Icon type="plus"></Icon>
+									新增
+								</a>
+								<can-edit-table @on-delete="handleRemovePerson" v-model="resultData2" :columns-list="tableColumns2"></can-edit-table>
+							</Card>
+							</Col>
+						</Row>
+			</Tab-pane>
 		</Tabs>
 		</Col>
 	</div>
@@ -759,12 +761,12 @@
 				this.getSinglePanoramic(params).then(res => {
 					this.resultValue = res
 					var params = {
-						id: 'defalut',
+						id: '',
 						name: res.panoAddress
 					}
 					this.cityList.push(params)
 					setTimeout(() => {
-						this.cityDefault = 'defalut'
+						this.cityDefault = ''
 					},500)
 					this.resultData = res.banaPanoFunction
 					this.resultData2 = res.banaPanoPerson
@@ -922,7 +924,7 @@
 				for (let index = 0; index < this.cityList.length; index++) {
 					const element = this.cityList[index];
 					if (element.id === this.cityDefault) {
-						if (this.cityDefault == 'default') {
+						if (this.cityDefault == '') {
 							addressName = this.resultValue.panoAddress
 							long = this.resultValue.panoLongitude
 							dim = this.resultValue.panoDimension

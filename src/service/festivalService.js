@@ -18,7 +18,7 @@ export default {
 				} else {
 					this.$Message.error(result.message);
 				}
-				return result.data
+				return result
 			})
 		},
 		//删除节日
