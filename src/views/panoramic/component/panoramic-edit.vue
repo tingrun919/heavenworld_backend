@@ -101,7 +101,7 @@
 			<Select v-model="modelAction">
 				<Option v-for="item in actionList" :value="item.value" :key="item.value">{{ item.label }}</Option>
 			</Select>
-			<Input v-if="modelAction == 3 || modelAction == 4" v-model="actionDesc" placeholder="请输入"></Input>
+			<Input v-if="modelAction != 2" v-model="actionDesc" placeholder="请输入"></Input>
 		</Modal>
 		<Modal title="新增" @on-ok="handlePerson" v-model="personShowAdd" class-name="vertical-center-modal">
 			<Input v-model="personName" placeholder="请输入名称"></Input>
@@ -761,13 +761,13 @@
 				this.getSinglePanoramic(params).then(res => {
 					this.resultValue = res
 					var params = {
-						id: '',
+						id: '1',
 						name: res.panoAddress
 					}
 					this.cityList.push(params)
 					setTimeout(() => {
-						this.cityDefault = ''
-					},500)
+						this.cityDefault = '1'
+					},900)
 					this.resultData = res.banaPanoFunction
 					this.resultData2 = res.banaPanoPerson
 					if(res.panoPicture){

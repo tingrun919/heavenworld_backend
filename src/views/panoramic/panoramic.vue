@@ -43,7 +43,7 @@
 					pagesize: 10,//每页显示条数
 					panoid: '',//标题搜索条件
 					typeid: '',//一级分类model
-					orgid: Cookies.get('orgid') == 1 ? '' : Cookies.get('orgid')  ,//二级分类model
+					orgid: Cookies.get('orgid') == 1 ? '' : Cookies.get('orgid'),//二级分类model
 				},
 				loading: true,//表格加载动画
 				fCategory: [],//一级分类
@@ -172,6 +172,10 @@
 									},
 									on: {
 										click: () => {
+											if (params.row.panoState == -1) {
+												this.$Message.error('正在生成，请稍后再试！');
+												return;
+											}
 											let argu = { panoramic_id: params.row.panoId };
 											this.$router.push({
 												name: 'panoramic_edit',
@@ -223,7 +227,7 @@
 			},
 			//是否置顶
 			handleIfTop(infoId, status) {
-				if(status == -1){
+				if (status == -1) {
 					this.$Message.error('正在生成，请稍后再试！');
 					return;
 				}

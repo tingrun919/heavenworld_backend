@@ -81,16 +81,16 @@
 						key: 'banapanofabuCount',
 						align: 'center'
 					},
-					{
-						title: '待审核全景数',
-						key: 'banapanoshenhezhongCount',
-						align: 'center'
-					},
-					{
-						title: '审核失败数',
-						key: 'banapanoshenheshibaiCount',
-						align: 'center'
-					},
+					// {
+					// 	title: '待审核全景数',
+					// 	key: 'banapanoshenhezhongCount',
+					// 	align: 'center'
+					// },
+					// {
+					// 	title: '审核失败数',
+					// 	key: 'banapanoshenheshibaiCount',
+					// 	align: 'center'
+					// },
 					{
 						title: '已下架数量',
 						key: 'banapanoxiajiaCount',
