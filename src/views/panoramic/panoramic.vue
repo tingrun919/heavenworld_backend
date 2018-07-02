@@ -8,6 +8,10 @@
 			<Card>
 				<span>标题名称：</span>
 				<Input v-model="page.infoTitle" placeholder="请输入商品名称" clearable style="width: 200px"></Input>
+				<span>发布人：</span>
+				<Select v-model="page.staffid" style="width: 200px" clearable filterable remote :remote-method="remoteMethod" :loading="loading1">
+               		<Option v-for="(option, index) in userList" :value="option.staffId" :key="index">{{option.staffNickname}}</Option>
+            	</Select>
 				<span class="margin-left-10">分类：</span>
 				<Select v-model="page.typeid" clearable style="width:150px">
 						<Option v-for="item in category" :value="item.typeId" :key="item.typeId">{{ item.typeName }}</Option>
@@ -29,10 +33,11 @@
 </template>
 <script>
 	import panoramicService from '../../service/panoramicService.js';
+	import userService from '../../service/userService.js';
 	import Cookies from 'js-cookie';
 
 	export default {
-		mixins: [panoramicService],
+		mixins: [panoramicService, userService],
 		data() {
 			return {
 				resultValue: [],//列表数据
@@ -49,6 +54,8 @@
 				fCategory: [],//一级分类
 				sCategory: [],//二级分类
 				fDisabled: true,//二级分类是否启用
+				userList: [],
+				loading1:false,
 				currentState: [//是否发布
 					{
 						value: '1',
@@ -240,6 +247,17 @@
 					this.fetchList()
 				})
 			},
+			remoteMethod(query){
+				var params = {
+					token: Cookies.get('token'),
+					staffNickname: query,
+					page:1,
+					pageSize:20,
+				}
+				this.getUserList(params).then(res => {
+					this.userList = res.list
+				})
+			}
 		}
 	}
 </script>

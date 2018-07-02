@@ -7,10 +7,10 @@
 			<Card>
 				<span>标题名：</span>
 				<Input v-model="page.infoTitle" placeholder="请输入标题名" clearable style="width: 150px"></Input>
-				<!-- <span>发布人：</span> -->
-				<!-- <Select v-model="page.infoStaffId" style="width: 150px" clearable filterable remote :remote-method="remoteMethod" :loading="loading1">
+				<span>发布人：</span>
+				<Select v-model="page.staffid" style="width: 150px" clearable filterable remote :remote-method="remoteMethod" :loading="loading1">
                		<Option v-for="(option, index) in userList" :value="option.staffId" :key="index">{{option.staffNickname}}</Option>
-            	</Select> -->
+            	</Select>
 				<span class="margin-left-10">一级分类：</span>
 				<Select v-model="page.typePId" clearable style="width:150px">
 						<Option v-for="item in fCategory" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -35,7 +35,7 @@
 				<Table :loading="loading" stripe border :columns="tableColumns" :data="resultValue"></Table>
 				<div style="margin: 10px;overflow: hidden">
 					<div style="float: right;">
-						<Page show-elevator show-sizer @on-page-size-change="changePage" :total="pageTotal" :current="page.beginRow" @on-change="changePage"></Page>
+						<Page show-elevator show-sizer @on-page-size-change="changePage" :total="pageTotal" :current="page.page" @on-change="changePage"></Page>
 					</div>
 				</div>
 			</Card>
@@ -57,8 +57,8 @@
 				pageTotal: null,//总页数
 				category: [],//全部类型
 				page: {
-					beginRow: 1,//当前页数
-					pageSize: 10,//每页显示条数
+					page: 1,//当前页数
+					pagesize: 10,//每页显示条数
 					infoTitle: '',//标题搜索条件
 					typePId: '',//一级分类model
 					infoTypeId: '',//二级分类model
@@ -66,7 +66,7 @@
 					infoIftop: '',//是否置顶
 					orgid: Cookies.get('orgid') != 2 ? '' : Cookies.get('orgid'),
 					token: Cookies.get('token'),
-					// infoStaffId:''
+					staffid:''
 				},
 				loading: true,//表格加载动画
 				loading1:false,
@@ -286,7 +286,7 @@
 			//分页
 			changePage(pageNum) {
 				this.loading = true
-				this.page.beginRow = pageNum
+				this.page.page = pageNum
 				this.fetchList()
 			},
 			//删除资讯
