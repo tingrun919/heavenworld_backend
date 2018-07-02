@@ -260,8 +260,8 @@
 			fetchList() {
 				this.getInformationList(this.page).then(res => {
 					this.loading = false
-					this.resultValue = res
-					this.pageTotal = new Number(res[0].informationCount)
+					this.resultValue = res.list
+					this.pageTotal = new Number(res.total)
 				})
 			},
 			//处理分类
