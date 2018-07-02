@@ -144,6 +144,23 @@ export default {
 				}
 				return result.data
 			})
+		},
+		getkrpanoHotList(params){
+			return Util.get('krpano/sceneGethostpot', params).then(res => {
+				var result = res.data
+				return result.data
+			})
+		},
+		detkrpanoHot(params){
+			return Util.get('krpano/delHostpot ', params).then(res => {
+				var result = res.data
+				if (result.code == 100000) {
+					this.$Message.success('删除成功！');
+				} else {
+					this.$Message.error(result.message);
+				}
+				return result.data
+			})
 		}
 	}
 }
