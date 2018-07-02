@@ -7,7 +7,7 @@
 		<Row>
 			<Card>
 				<span>标题名称：</span>
-				<Input v-model="page.infoTitle" placeholder="请输入商品名称" clearable style="width: 200px"></Input>
+				<Input v-model="page.titlename" placeholder="请输入标题名称" clearable style="width: 200px"></Input>
 				<span>发布人：</span>
 				<Select v-model="page.staffid" style="width: 200px" clearable filterable remote :remote-method="remoteMethod" :loading="loading1">
                		<Option v-for="(option, index) in userList" :value="option.staffId" :key="index">{{option.staffNickname}}</Option>
@@ -48,6 +48,7 @@
 					pagesize: 10,//每页显示条数
 					panoid: '',//标题搜索条件
 					typeid: '',//一级分类model
+					titlename:'',
 					orgid: Cookies.get('orgid') == 1 ? '' : Cookies.get('orgid'),//二级分类model
 				},
 				loading: true,//表格加载动画
