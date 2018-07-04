@@ -95,21 +95,25 @@
 			},
 			//生成全景
 			handlePanoramic() {
-				this.disabled = true
-				this.modal6 = true
-				var name = this.getPanoramicName()
-				var value = this.getPanoramicValue()
-				var param = {
-					file: this.uploadList[0].file,
-					title: this.title,
-					name: name,
-					value: value,
-					token: Cookies.get('token'),
-					type: this.typePId,
+				if (this.title && this.typePId) {
+					this.disabled = true
+					this.modal6 = true
+					var name = this.getPanoramicName()
+					var value = this.getPanoramicValue()
+					var param = {
+						file: this.uploadList[0].file,
+						title: this.title,
+						name: name,
+						value: value,
+						token: Cookies.get('token'),
+						type: this.typePId,
+					}
+					this.PanoramicApi(param).then(res => {
+						console.log(res)
+					})
+				}else{
+					this.$Message.warning('作品标题或者全景分类不能未空！');
 				}
-				this.PanoramicApi(param).then(res => {
-					console.log(res)
-				})
 			},
 			getPanoramicName() {
 				var result = ''

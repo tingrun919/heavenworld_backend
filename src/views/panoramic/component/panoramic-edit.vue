@@ -86,6 +86,29 @@
 		height: 100%;
 	}
 </style>
+<style>
+	.demo-spin-icon-load {
+		animation: ani-demo-spin 1s linear infinite;
+	}
+
+	@keyframes ani-demo-spin {
+		from {
+			transform: rotate(0deg);
+		}
+		50% {
+			transform: rotate(180deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.demo-spin-col {
+		height: 100px;
+		position: relative;
+		border: 1px solid #eee;
+	}
+</style>
 <template>
 	<div>
 		<Modal v-model="modal6" title="操作确认" @on-ok="asyncOK">
@@ -107,8 +130,15 @@
 			<Input v-model="personName" placeholder="请输入名称"></Input>
 		</Modal>
 		<Modal title="新增" @on-ok="handleAddMusic" v-model="showMusicModal" class-name="vertical-center-modal">
+			<Spin fix v-if="uploadmusic">
+				<Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+				<div>正在上传中，请稍后...</div>
+			</Spin>
 			<Input class="margin-top-20" v-model="musicdesc" placeholder="请输入新增音乐的名称"></Input>
-			<Input class="margin-top-20" v-model="musicurl" placeholder="请输入新增音乐的网络地址"></Input>
+			<Upload :show-upload-list='false' :before-upload="handleUpload" :on-success="handleSuccess3" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=2">
+				<Button type="primary" icon="ios-cloud-upload-outline">请选择上传的音乐</Button>
+			</Upload>
+			<!-- <Input class="margin-top-20" v-model="musicurl" placeholder="请输入新增音乐的网络地址"></Input> -->
 		</Modal>
 		<Col span="24" class="demo-tabs-style1" style="background: #e3e8ee;padding:10px;">
 		<Tabs type="card" @on-click="loadingHot">
@@ -191,9 +221,14 @@
 							<Icon type="paper-airplane"></Icon>
 							全景位置设置
 						</p>
-						<Select clearable v-model="cityDefault" filterable remote :remote-method="keyUpSearch" :loading="loading1">
+						<Input v-model="addressName" style="width:250px;" placeholder="请输入地址名称"></Input>
+						<br>
+						<Input v-model="longD" style="width:150px;" placeholder="请输入经纬度"></Input>
+						<!-- <Select clearable v-model="cityDefault" filterable remote :remote-method="keyUpSearch" :loading="loading1">
 							<Option v-for="(option, index) in cityList" :value="option.id" :key="index">{{option.pname}}{{option.cityname}}{{option.adname}}{{option.address}}{{option.name}}</Option>
-						</Select>
+						</Select> -->
+						<span>请使用此网站获取地址经纬度，并粘贴到左侧框中-></span>
+						<a href="https://lbs.amap.com/console/show/picker">https://lbs.amap.com/console/show/picker</a>
 					</Card>
 					</Col>
 					<Col span="12">
@@ -533,15 +568,15 @@
 					</Col>
 				</Row>
 				<Row>
-						<Col span="24">
-						<Card>
-							<p slot="title">
-								<Icon type="paper-airplane"></Icon>
-								热点管理
-							</p>
-							<can-edit-table @on-delete="handleRemoveHot" v-model="hotspotList" :columns-list="tableColumns4"></can-edit-table>
-						</Card>
-						</Col>
+					<Col span="24">
+					<Card>
+						<p slot="title">
+							<Icon type="paper-airplane"></Icon>
+							热点管理
+						</p>
+						<can-edit-table @on-delete="handleRemoveHot" v-model="hotspotList" :columns-list="tableColumns4"></can-edit-table>
+					</Card>
+					</Col>
 				</Row>
 			</Tab-pane>
 			<Tab-pane label="背景音乐">
@@ -604,9 +639,12 @@
 		data() {
 			return {
 				commentShowAdd: false,//新增控制弹窗
+				uploadmusic:false,
 				modelAction: '',
 				actionDesc: '',
 				actionName: '',
+				longD:'',
+				addressName:'',
 				showMusicModal: false,
 				modal6: false,
 				modal7: false,
@@ -649,74 +687,74 @@
 				style: '',
 				musicurl: '',
 				musicdesc: '',
-				hotspotList:[],
-				imgList:[
-				{ name: 'hotspot_4', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot1.png?2.2.7' },
-				{ name: 'hotspot_5', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot2.png?2.2.7' },
-				{ name: 'hotspot_6', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot3.png?2.2.7' },
-				{ name: 'hotspot_7', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot4.png?2.2.7' },
-				{ name: 'hotspot_8', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot5.png?2.2.7' },
-				{ name: 'hotspot_9', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot6.png?2.2.7' },
-				{ name: 'hotspot_10', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot7.png?2.2.7' },
-				{ name: 'hotspot_11', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot8.png?2.2.7' },
-				{ name: 'hotspot_12', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot9.png?2.2.7' },
-				{ name: 'hotspot_13', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot10.png?2.2.7' },
-				{ name: 'hotspot_14', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot11.png?2.2.7' },
-				{ name: 'hotspot_15', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot12.png?2.2.7' },
-				{ name: 'hotspot_16', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot13.png?2.2.7' },
-				{ name: 'hotspot_17', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot14.png?2.2.7' },
-				{ name: 'hotspot_18', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot15.png?2.2.7' },
-				{ name: 'hotspot_19', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot16.png?2.2.7' },
-				{ name: 'hotspot_20', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot17.png?2.2.7' },
-				{ name: 'hotspot_21', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot18.png?2.2.7' },
-				{ name: 'hotspot_22', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot19.png?2.2.7' },
-				{ name: 'hotspot_23', url: 'https://ssl-player.720static.com/hotspot/80/spotd1_gif.png' },
-				{ name: 'hotspot_24', url: 'https://ssl-player.720static.com/hotspot/80/spotd2_gif.png' },
-				{ name: 'hotspot_25', url: 'https://ssl-player.720static.com/hotspot/80/spotd3_gif.png' },
-				{ name: 'hotspot_26', url: 'https://ssl-player.720static.com/hotspot/80/spotd4_gif.png' },
-				{ name: 'hotspot_27', url: 'https://ssl-player.720static.com/hotspot/80/spotd5_gif.png' },
-				{ name: 'hotspot_28', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_link.png?2.2.7' },
-				{ name: 'hotspot_29', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_gallery.png?2.2.7' },
-				{ name: 'hotspot_30', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_video.png?2.2.7' },
-				{ name: 'hotspot_31', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_txt.png?2.2.7' },
-				{ name: 'hotspot_32', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_music.png?2.2.7' },
-				{ name: 'hotspot_33', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd1_gif.png' },
-				{ name: 'hotspot_34', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd2_gif.png' },
-				{ name: 'hotspot_35', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd3_gif.png' },
-				{ name: 'hotspot_36', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd4_gif.png' },
-				{ name: 'hotspot_37', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd5_gif.png' },
-				{ name: 'hotspot_38', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd6_gif.png' },
-				{ name: 'hotspot_39', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd7_gif.png' },
-				{ name: 'hotspot_40', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd8_gif.png' },
-				{ name: 'hotspot_41', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd9_gif.png' },
-				{ name: 'hotspot_42', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd10_gif.png' },
-				{ name: 'hotspot_43', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd11_gif.png' },
-				{ name: 'hotspot_44', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd12_gif.png' },
-				{ name: 'hotspot_45', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd1.png?2.2.7' },
-				{ name: 'hotspot_46', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd2.png?2.2.7' },
-				{ name: 'hotspot_47', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd3.png?2.2.7' },
-				{ name: 'hotspot_48', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd4.png?2.2.7' },
-				{ name: 'hotspot_49', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd5.png?2.2.7' },
-				{ name: 'hotspot_50', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd6.png?2.2.7' },
-				{ name: 'hotspot_51', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd7.png?2.2.7' },
-				{ name: 'hotspot_52', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd8.png?2.2.7' },
-				{ name: 'hotspot_53', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd9.png?2.2.7' },
-				{ name: 'hotspot_54', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd10.png?2.2.7' },
-				{ name: 'hotspot_55', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd11.png?2.2.7' },
-				{ name: 'hotspot_56', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd12.png?2.2.7' },
-				{ name: 'hotspot_57', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot20.png?2.2.7' },
-				{ name: 'hotspot_58', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot21.png?2.2.7' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd01_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd02_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd03_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd04_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd05_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd06_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd07_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd08_gif.png' },
-				{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd09_gif.png' },
-				{ name: 'new_spotd1', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd10_gif.png' },
-				{ name: 'new_spotd1', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd11_gif.png' },
+				hotspotList: [],
+				imgList: [
+					{ name: 'hotspot_4', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot1.png?2.2.7' },
+					{ name: 'hotspot_5', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot2.png?2.2.7' },
+					{ name: 'hotspot_6', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot3.png?2.2.7' },
+					{ name: 'hotspot_7', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot4.png?2.2.7' },
+					{ name: 'hotspot_8', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot5.png?2.2.7' },
+					{ name: 'hotspot_9', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot6.png?2.2.7' },
+					{ name: 'hotspot_10', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot7.png?2.2.7' },
+					{ name: 'hotspot_11', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot8.png?2.2.7' },
+					{ name: 'hotspot_12', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot9.png?2.2.7' },
+					{ name: 'hotspot_13', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot10.png?2.2.7' },
+					{ name: 'hotspot_14', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot11.png?2.2.7' },
+					{ name: 'hotspot_15', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot12.png?2.2.7' },
+					{ name: 'hotspot_16', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot13.png?2.2.7' },
+					{ name: 'hotspot_17', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot14.png?2.2.7' },
+					{ name: 'hotspot_18', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot15.png?2.2.7' },
+					{ name: 'hotspot_19', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot16.png?2.2.7' },
+					{ name: 'hotspot_20', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot17.png?2.2.7' },
+					{ name: 'hotspot_21', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot18.png?2.2.7' },
+					{ name: 'hotspot_22', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot19.png?2.2.7' },
+					{ name: 'hotspot_23', url: 'https://ssl-player.720static.com/hotspot/80/spotd1_gif.png' },
+					{ name: 'hotspot_24', url: 'https://ssl-player.720static.com/hotspot/80/spotd2_gif.png' },
+					{ name: 'hotspot_25', url: 'https://ssl-player.720static.com/hotspot/80/spotd3_gif.png' },
+					{ name: 'hotspot_26', url: 'https://ssl-player.720static.com/hotspot/80/spotd4_gif.png' },
+					{ name: 'hotspot_27', url: 'https://ssl-player.720static.com/hotspot/80/spotd5_gif.png' },
+					{ name: 'hotspot_28', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_link.png?2.2.7' },
+					{ name: 'hotspot_29', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_gallery.png?2.2.7' },
+					{ name: 'hotspot_30', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_video.png?2.2.7' },
+					{ name: 'hotspot_31', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_txt.png?2.2.7' },
+					{ name: 'hotspot_32', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/static_music.png?2.2.7' },
+					{ name: 'hotspot_33', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd1_gif.png' },
+					{ name: 'hotspot_34', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd2_gif.png' },
+					{ name: 'hotspot_35', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd3_gif.png' },
+					{ name: 'hotspot_36', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd4_gif.png' },
+					{ name: 'hotspot_37', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd5_gif.png' },
+					{ name: 'hotspot_38', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd6_gif.png' },
+					{ name: 'hotspot_39', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd7_gif.png' },
+					{ name: 'hotspot_40', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd8_gif.png' },
+					{ name: 'hotspot_41', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd9_gif.png' },
+					{ name: 'hotspot_42', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd10_gif.png' },
+					{ name: 'hotspot_43', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd11_gif.png' },
+					{ name: 'hotspot_44', url: 'https://ssl-player.720static.com/hotspot/80/new_spotd12_gif.png' },
+					{ name: 'hotspot_45', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd1.png?2.2.7' },
+					{ name: 'hotspot_46', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd2.png?2.2.7' },
+					{ name: 'hotspot_47', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd3.png?2.2.7' },
+					{ name: 'hotspot_48', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd4.png?2.2.7' },
+					{ name: 'hotspot_49', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd5.png?2.2.7' },
+					{ name: 'hotspot_50', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd6.png?2.2.7' },
+					{ name: 'hotspot_51', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd7.png?2.2.7' },
+					{ name: 'hotspot_52', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd8.png?2.2.7' },
+					{ name: 'hotspot_53', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd9.png?2.2.7' },
+					{ name: 'hotspot_54', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd10.png?2.2.7' },
+					{ name: 'hotspot_55', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd11.png?2.2.7' },
+					{ name: 'hotspot_56', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/new_spotd12.png?2.2.7' },
+					{ name: 'hotspot_57', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot20.png?2.2.7' },
+					{ name: 'hotspot_58', url: 'https://ssl-player.720static.com/@/krp/hotspot/v2/spot21.png?2.2.7' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd01_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd02_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd03_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd04_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd05_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd06_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd07_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd08_gif.png' },
+					{ name: 'new_spotd0', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd09_gif.png' },
+					{ name: 'new_spotd1', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd10_gif.png' },
+					{ name: 'new_spotd1', url: 'https://ssl-player.720static.com/@/krp/1.19-pr8/hotspotIcons/new_spotd11_gif.png' },
 				],
 				tableColumns: [  //表头
 					{
@@ -868,6 +906,8 @@
 					panoid: this.$route.params.panoramic_id
 				}
 				this.getSinglePanoramic(params).then(res => {
+					this.longD = res.panoLongitude + ',' + res.panoDimension
+					this.addressName = res.panoAddress
 					this.resultValue = res
 					var params = {
 						id: '1',
@@ -918,6 +958,10 @@
 				this.$nextTick(() => {
 					this.uploadList = this.$refs.upload.fileList;
 				})
+			},
+			handleSuccess3(res, file) {
+				this.musicurl = res.data
+				this.uploadmusic = false
 			},
 			handleFormatError(file) {
 				this.$Notice.warning({
@@ -1029,27 +1073,27 @@
 				this.handleUpdate()
 			},
 			handleSavePanoramic() {
-				var addressName = '', long = '', dim = '';
-				for (let index = 0; index < this.cityList.length; index++) {
-					const element = this.cityList[index];
-					if (element.id === this.cityDefault) {
-						if (this.cityDefault == '') {
-							addressName = this.resultValue.panoAddress
-							long = this.resultValue.panoLongitude
-							dim = this.resultValue.panoDimension
-						} else {
-							addressName = element.pname + element.cityname + element.adname + element.address + element.name
-							long = element.location.lng
-							dim = element.location.lat
-						}
-						break;
-					} else {
-						addressName = this.resultValue.panoAddress
-						long = this.resultValue.panoLongitude
-						dim = this.resultValue.panoDimension
-					}
-				}
-
+				console.log(this.longD)
+				// var addressName = '', long = '', dim = '';
+				// for (let index = 0; index < this.cityList.length; index++) {
+				// 	const element = this.cityList[index];
+				// 	if (element.id === this.cityDefault) {
+				// 		if (this.cityDefault == '') {
+				// 			addressName = this.resultValue.panoAddress
+				// 			long = this.resultValue.panoLongitude
+				// 			dim = this.resultValue.panoDimension
+				// 		} else {
+				// 			addressName = element.pname + element.cityname + element.adname + element.address + element.name
+				// 			long = element.location.lng
+				// 			dim = element.location.lat
+				// 		}
+				// 		break;
+				// 	} else {
+				// 		addressName = this.resultValue.panoAddress
+				// 		long = this.resultValue.panoLongitude
+				// 		dim = this.resultValue.panoDimension
+				// 	}
+				// }
 				var params = {
 					token: Cookies.get('token'),
 					panoid: this.$route.params.panoramic_id,
@@ -1058,9 +1102,9 @@
 					content: this.resultValue.panoContent,
 					title: this.resultValue.panoName,
 					type: this.resultValue.panoType,
-					address: addressName,
-					longitude: long,
-					dimension: dim,
+					address: this.addressName,
+					longitude: this.longD.split(',')[0],
+					dimension: this.longD.split(',')[1],
 					phone: this.resultValue.panoPhone
 				}
 				this.savePanoramicApi(params).then(() => {
@@ -1079,7 +1123,7 @@
 					embedpano({ swf: "../../../../static/vtour/tour.swf", xml: this.resultValue.panoTourxml, target: "pano", html5: "auto", mobilescale: 1.0, passQueryParameters: true });
 					setTimeout(() => {
 						this.getHotList()
-					},700)
+					}, 700)
 				} else if (name == 2) {
 					var params = {
 						token: Cookies.get('token'),
@@ -1176,7 +1220,7 @@
 					name: 'panoramic',
 				});
 			},
-			getHotList(){
+			getHotList() {
 				var krpano = document.getElementById('krpanoSWFObject');
 				var sname = krpano.get("scene[get(xml.scene)].name");
 				var params = {
@@ -1188,23 +1232,23 @@
 					this.hotspotList = res
 				})
 			},
-			handleImgHot(img){
+			handleImgHot(img) {
 				for (let i = 0; i < this.imgList.length; i++) {
 					const element = this.imgList[i];
-					if(element.name == img){
+					if (element.name == img) {
 						return element.url
 						break;
 					}
 				}
 			},
-			handleRemoveHot(val){
+			handleRemoveHot(val) {
 				var krpano = document.getElementById('krpanoSWFObject');
 				var sname = krpano.get("scene[get(xml.scene)].name");
 				var params = {
 					token: Cookies.get('token'),
 					panoid: this.$route.params.panoramic_id,
 					scenename: sname,
-					hostname:val.name
+					hostname: val.name
 				}
 				this.detkrpanoHot(params).then(res => {
 					$("#pano").empty()
@@ -1215,6 +1259,10 @@
 						this.getHotList()
 					}, 2000)
 				})
+			},
+			handleUpload(file) {
+				this.musicdesc = file.name
+				this.uploadmusic = true
 			}
 		}
 	}
