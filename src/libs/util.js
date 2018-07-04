@@ -9,7 +9,7 @@ let util = {
 
 };
 util.title = function (title) {
-	title = title || '天堂世界管理端';
+	title = title || 'VR新世界管理端';
 	window.document.title = title;
 };
 

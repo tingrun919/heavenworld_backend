@@ -197,6 +197,39 @@ export const appRouter = [
         children: [
 			{ path: 'festival_index', title: '节日管理', name: 'festival_index', icon: 'grid', component: () => import('@/views/festival/festival.vue') },
         ]
+	},
+	{
+        path: '/advertisings',
+        icon: 'grid',
+		name: 'advertising',
+		access: 0,
+        title: '广告管理',
+        component: Main,
+        children: [
+			{ path: 'advertising_index', title: '广告管理', name: 'advertising_index', icon: 'grid', component: () => import('@/views/advertising/advertising.vue') },
+        ]
+	},
+	{
+        path: '/allComments',
+        icon: 'grid',
+		name: 'allComment',
+		access: 0,
+        title: '全部评论',
+        component: Main,
+        children: [
+			{ path: 'allComment_index', title: '全部评论', name: 'allComment_index', icon: 'grid', component: () => import('@/views/comment/allComment.vue') },
+        ]
+	},
+	{
+        path: '/allBlessings',
+        icon: 'grid',
+		name: 'allBlessing',
+		access: 0,
+        title: '全部祈福',
+        component: Main,
+        children: [
+			{ path: 'allBlessing_index', title: '全部祈福', name: 'allBlessing_index', icon: 'grid', component: () => import('@/views/blessing/blessing.vue') },
+        ]
     },
 ];
 
