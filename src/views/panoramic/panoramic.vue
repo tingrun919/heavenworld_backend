@@ -230,7 +230,7 @@
 			//分页
 			changePage(pageNum) {
 				this.loading = true
-				this.page.beginRow = pageNum
+				this.page.page = pageNum
 				this.fetchList()
 			},
 			//是否置顶
