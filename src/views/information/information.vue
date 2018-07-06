@@ -64,7 +64,7 @@
 					infoTypeId: '',//二级分类model
 					infoState: '',//是否发布
 					infoIftop: '',//是否置顶
-					orgid: Cookies.get('orgid') != 2 ? '' : Cookies.get('orgid'),
+					orgid: Cookies.get('orgid') == 1 ? '' : Cookies.get('orgid'),
 					token: Cookies.get('token'),
 					staffid:''
 				},

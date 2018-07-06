@@ -228,7 +228,7 @@
 							<Option v-for="(option, index) in cityList" :value="option.id" :key="index">{{option.pname}}{{option.cityname}}{{option.adname}}{{option.address}}{{option.name}}</Option>
 						</Select> -->
 						<span>请使用此网站获取地址经纬度，并粘贴到左侧框中-></span>
-						<a href="https://lbs.amap.com/console/show/picker">https://lbs.amap.com/console/show/picker</a>
+						<a href="https://lbs.amap.com/console/show/picker" target="_Blank">https://lbs.amap.com/console/show/picker</a>
 					</Card>
 					</Col>
 					<Col span="12">
