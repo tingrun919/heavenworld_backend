@@ -12,8 +12,8 @@
 			<Card>
 				<Row>
 					<Col span="18">
-					<Upload :on-success="handleSuccess" :action="`http://39.107.78.100:8080/banaworld_admin/krpano/picUpload?code=${uploadCode}`">
-						<Button type="primary" icon="ios-cloud-upload-outline">选择2:1全景图</Button>
+					<Upload :on-success="handleSuccess" :on-progress="progress" :action="`http://39.107.78.100:8080/banaworld_admin/krpano/picUpload?code=${uploadCode}`">
+						<Button type="primary" :disabled="disabled1" icon="ios-cloud-upload-outline">选择2:1全景图</Button>
 					</Upload>
 					</Col>
 					<Col span="6" style="text-align: right;vertical-align: center;line-height: 32px;"> 上传有问题？请查看全景图规范
@@ -75,6 +75,7 @@
 				typePId: '',
 				title: '',
 				disabled: false,
+				disabled1: false,
 				modal6: false,
 				loading: true
 			};
@@ -88,8 +89,12 @@
 			})
 		},
 		methods: {
+			progress(){
+				this.disabled1 = true
+			},
 			//上传成功之后的回调
 			handleSuccess(res, file) {
+				this.disabled1 = false
 				// 因为上传过程为实例，这里模拟添加 url
 				this.uploadList.push(res.data)
 			},
