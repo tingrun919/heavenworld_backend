@@ -12,7 +12,7 @@
 			<Card>
 				<Row>
 					<Col span="18">
-					<Upload :on-success="handleSuccess" :on-progress="progress" :action="`http://39.107.78.100:8080/banaworld_admin/krpano/picUpload?code=${uploadCode}`">
+					<Upload :on-success="handleSuccess" :max-size="25600" :on-exceeded-size="handleMaxSize" :on-progress="progress" :action="`http://39.107.78.100:8080/banaworld_admin/krpano/picUpload?code=${uploadCode}`">
 						<Button type="primary" :disabled="disabled1" icon="ios-cloud-upload-outline">选择2:1全景图</Button>
 					</Upload>
 					</Col>
@@ -89,6 +89,12 @@
 			})
 		},
 		methods: {
+			handleMaxSize (file) {
+                this.$Notice.warning({
+                    title: '图片大小超过限制',
+                    desc: '文件  ' + file.name + ' 太大了, 请不要超过 25M.'
+                });
+            },
 			progress(){
 				this.disabled1 = true
 			},

@@ -5,6 +5,10 @@
 
 <template>
 	<div>
+		<Spin fix v-if="uploadvideoali">
+			<Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+			<div>正在上传中，请稍后...</div>
+		</Spin>
 		<Row>
 			<Col span="18">
 			<Card>
@@ -44,7 +48,7 @@
 								<Progress style="width: 400px;" v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
 							</template>
 						</div>
-						<Upload ref="uploadVideo" :show-upload-list="false" :default-file-list="defaultListVideo" :on-success="handleSuccessVideo"
+						<Upload ref="uploadVideo" :before-upload="handleUpload" :show-upload-list="false" :default-file-list="defaultListVideo" :on-success="handleSuccessVideo"
 						 :format="['mp4','mov']" :on-format-error="handleFormatError" type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=3"
 						 style="display: inline-block;width:58px;">
 							<div style="width: 58px;height:58px;line-height: 58px;">
@@ -145,7 +149,7 @@
 					<Button @click="handleUpdate" :loading="publishLoading" icon="ios-checkmark" long type="success">保存</Button>
 				</Row>
 			</Card>
-			<Card v-if="ifThird != 2">
+			<Card v-if="ifThird == 1">
 				<p slot="title">
 					<Icon type="paper-airplane"></Icon>
 					数据机器人
@@ -183,7 +187,8 @@
 		mixins: [informationService],
 		data() {
 			return {
-				ifThird:Cookies.get('orgid'),
+				uploadvideoali: false,
+				ifThird: Cookies.get('orgid'),
 				resultData: [],
 				category: [],//全部类型
 				fCategory: [],//一级分类
@@ -405,19 +410,23 @@
 				}
 			},
 			handleSuccessVideo(res, file) {
-				file.url = res.data
-				file.name = file.name
-
-				this.resultData.infoVideo = res.data
-				if (this.$route.params.information_id == 'new') {
-					this.$nextTick(() => {
-						this.uploadListVideo = this.$refs.uploadVideo.fileList;
-					})
-					if (this.uploadListVideo.length > 0) {
+				if (res.code == 100000) {
+					file.url = res.data
+					file.name = file.name
+					this.uploadvideoali = false
+					this.resultData.infoVideo = res.data
+					if (this.$route.params.information_id == 'new') {
+						this.$nextTick(() => {
+							this.uploadListVideo = this.$refs.uploadVideo.fileList;
+						})
+						if (this.uploadListVideo.length > 0) {
+							this.$refs.uploadVideo.fileList.splice(0, 1);
+						}
+					} else {
 						this.$refs.uploadVideo.fileList.splice(0, 1);
 					}
-				} else {
-					this.$refs.uploadVideo.fileList.splice(0, 1);
+				}else{
+					this.$Message.error(res.message);
 				}
 			},
 			handleFormatError(file) {
@@ -502,6 +511,9 @@
 					this.robotcommentcount = ''
 					this.handleOneSelect(id, false)
 				})
+			},
+			handleUpload() {
+				this.uploadvideoali = true
 			}
 		},
 		destroyed() {
