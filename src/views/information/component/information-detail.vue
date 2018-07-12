@@ -24,7 +24,7 @@
 							</template>
 						</div>
 						<Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']"
-						 :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload"
+						 :max-size="5120" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload"
 						 multiple type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=1" style="display: inline-block;width:58px;">
 							<div style="width: 58px;height:58px;line-height: 58px;">
 								<Icon type="camera" size="20"></Icon>
@@ -172,6 +172,9 @@
 			</Card>
 			</Col>
 		</Row>
+		<Upload action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=2" :on-success="editorImg" style="display:none">
+			<Button type="ghost" icon="ios-cloud-upload-outline" ref="btn" id="btn">Upload files</Button>
+		</Upload>
 	</div>
 </template>
 
@@ -323,13 +326,15 @@
 					menubar: 'edit insert view format table tools',
 					theme: 'modern',
 					plugins: [
-						'advlist autolink lists link image charmap print preview hr anchor pagebreak imagetools',
-						'searchreplace visualblocks visualchars code fullscreen fullpage',
-						'insertdatetime media nonbreaking save table contextmenu directionality',
-						'emoticons paste textcolor colorpicker textpattern imagetools codesample'
+						"advlist autolink lists link image charmap print preview imageSelector hr anchor pagebreak imagetools",
+						"searchreplace visualblocks visualchars code fullscreen fullpage",
+						"insertdatetime media nonbreaking save table contextmenu directionality",
+						"emoticons paste   colorpicker textpattern imagetools codesample"
 					],
-					toolbar1: ' newnote print fullscreen preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample',
-					autosave_interval: '20s',
+					toolbar1:
+						" newnote print fullscreen preview | undo redo | insert | styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons media codesample imageSelector",
+					autosave_interval: "20s",
+					imageSelectorCallback: this.showImageSelector,
 					image_advtab: true,
 					table_default_styles: {
 						width: '100%',
@@ -352,6 +357,18 @@
 			})
 		},
 		methods: {
+			editorImg(file, res) {
+				console.log(file);
+				console.log(res);
+				tinymce.execCommand(
+					"mceInsertContent",
+					false,
+					'<img alt="Smiley face"  src="' + res.response.data + '"/>'
+				);
+			},
+			showImageSelector(cb) {
+				$("#btn").click();
+			},
 			handleCategory(res) {
 				for (var item of res) {
 					if (item.typePid == 0) {	// 一级分类
@@ -432,7 +449,7 @@
 					desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
 				});
 			},
-			handleFormatErrorVido(file){
+			handleFormatErrorVido(file) {
 				this.uploadvideoali = false
 				this.$Notice.warning({
 					title: '格式错误',
@@ -442,7 +459,7 @@
 			handleMaxSize(file) {
 				this.$Notice.warning({
 					title: 'Exceeding file size limit',
-					desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+					desc: 'File  ' + file.name + ' is too large, no more than 5M.'
 				});
 			},
 			handleBeforeUpload() {
