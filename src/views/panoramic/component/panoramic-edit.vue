@@ -195,7 +195,7 @@
 								<img :src="item.url">
 								<div class="demo-upload-list-cover">
 									<Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
-									<Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+									<Icon type="ios-trash-outline" @click.native="handleRemovepic(item)"></Icon>
 								</div>
 							</template>
 							<template v-else>
@@ -941,10 +941,14 @@
 				this.imgName = name;
 				this.visible = true;
 			},
-			handleRemove(file) {
+			handleRemovepic(file) {
 				// 从 upload 实例删除数据
 				const fileList = this.$refs.upload.fileList;
 				this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+				this.resultValue.panoPicture = ''
+				for(var item of this.$refs.upload.fileList){
+					this.resultValue.panoPicture = this.resultValue.panoPicture ? this.resultValue.panoPicture + "," + item.url : item.url
+				}
 			},
 			handleSuccess(res, file) {
 				file.url = res.data
@@ -1073,27 +1077,6 @@
 				this.handleUpdate()
 			},
 			handleSavePanoramic() {
-				console.log(this.longD)
-				// var addressName = '', long = '', dim = '';
-				// for (let index = 0; index < this.cityList.length; index++) {
-				// 	const element = this.cityList[index];
-				// 	if (element.id === this.cityDefault) {
-				// 		if (this.cityDefault == '') {
-				// 			addressName = this.resultValue.panoAddress
-				// 			long = this.resultValue.panoLongitude
-				// 			dim = this.resultValue.panoDimension
-				// 		} else {
-				// 			addressName = element.pname + element.cityname + element.adname + element.address + element.name
-				// 			long = element.location.lng
-				// 			dim = element.location.lat
-				// 		}
-				// 		break;
-				// 	} else {
-				// 		addressName = this.resultValue.panoAddress
-				// 		long = this.resultValue.panoLongitude
-				// 		dim = this.resultValue.panoDimension
-				// 	}
-				// }
 				var params = {
 					token: Cookies.get('token'),
 					panoid: this.$route.params.panoramic_id,
