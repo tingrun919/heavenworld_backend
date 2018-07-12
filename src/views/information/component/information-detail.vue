@@ -5,10 +5,6 @@
 
 <template>
 	<div>
-		<Spin fix v-if="uploadvideoali">
-			<Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
-			<div>正在上传中，请稍后...</div>
-		</Spin>
 		<Row>
 			<Col span="18">
 			<Card>
@@ -39,17 +35,18 @@
 						</Modal>
 					</FormItem>
 					<FormItem label="资讯视频" v-if="hasVideo">
+						<Spin fix v-if="uploadvideoali">
+							<Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+							<div>正在上传中，请稍后...</div>
+						</Spin>
 						<div class="demo-upload-list-video" v-for="(item,index) in uploadListVideo">
 							<template v-if="item.status == 'finished'">
 								<video id="videoTag" playsinline webkit-playsinline ref="videoTag" :src="item.url" type="video/mp4" style="width: 50%" controls="controls">
 								</video>
 							</template>
-							<template v-else>
-								<Progress style="width: 400px;" v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-							</template>
 						</div>
 						<Upload ref="uploadVideo" :before-upload="handleUpload" :show-upload-list="false" :default-file-list="defaultListVideo" :on-success="handleSuccessVideo"
-						 :format="['mp4','mov']" :on-format-error="handleFormatError" type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=3"
+						 :format="['mp4','mov','mkv']" :on-format-error="handleFormatErrorVido" type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=3"
 						 style="display: inline-block;width:58px;">
 							<div style="width: 58px;height:58px;line-height: 58px;">
 								<Icon type="camera" size="20"></Icon>
@@ -425,7 +422,7 @@
 					} else {
 						this.$refs.uploadVideo.fileList.splice(0, 1);
 					}
-				}else{
+				} else {
 					this.$Message.error(res.message);
 				}
 			},
@@ -433,6 +430,13 @@
 				this.$Notice.warning({
 					title: 'The file format is incorrect',
 					desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+				});
+			},
+			handleFormatErrorVido(file){
+				this.uploadvideoali = false
+				this.$Notice.warning({
+					title: '格式错误',
+					desc: '文件 ' + file.name + ' 的格式不正确，请上传mp4或着mov或者mkv格式的视频！'
 				});
 			},
 			handleMaxSize(file) {
