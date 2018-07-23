@@ -26,7 +26,7 @@
 			</Card>
 		</Row>
 		<Modal title="新增" :mask-closable="false" v-model="otherUserShowAdd" class-name="vertical-center-modal">
-			<Form ref="formItem" :model="formItem" :rules="ruleValidate" :label-width="80">
+			<Form ref="formItem" :model="formItem" :rules="ruleValidate" :label-width="100">
 				<Form-item label="公司名称" prop="thirdName">
 					<Input v-model="formItem.thirdName" placeholder="请输入公司名称"></Input>
 				</Form-item>
@@ -36,11 +36,11 @@
 				<Form-item label="联系方式" prop="thirdPhone">
 					<Input v-model="formItem.thirdPhone" placeholder="请输入联系方式"></Input>
 				</Form-item>
-				<Form-item label="账号" prop="usercount">
-					<Input v-model="formItem.usercount" placeholder="请输入账号"></Input>
+				<Form-item label="用户手机号" prop="usercount">
+					<Input v-model="formItem.usercount" placeholder="请输入用户手机号"></Input>
 				</Form-item>
-				<Form-item label="密码" prop="password">
-					<Input v-model="formItem.password" placeholder="请输入密码" type="password"></Input>
+				<Form-item label="用户密码" prop="password">
+					<Input v-model="formItem.password" placeholder="请输入用户密码" type="password"></Input>
 				</Form-item>
 				<Form-item label="密码确认" prop="passwdCheck">
 					<Input v-model="formItem.passwdCheck" placeholder="请再次输入密码" type="password"></Input>

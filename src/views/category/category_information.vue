@@ -5,8 +5,6 @@
 	<div>
 		<Row>
 			<Card>
-				<span>分类名称：</span>
-				<Input v-model="params.name" placeholder="请输入类型名称" clearable style="width: 200px"></Input>
 				<Button @click="fetchList" class="margin-left-10" type="primary" icon="search">查询</Button>
 				<Button @click="commentShowAdd = true" class="margin-left-10" type="success" icon="plus">新增</Button>
 			</Card>
@@ -40,7 +38,6 @@
 				resultValue: [],//列表数据
 				params: {
 					token: Cookies.get('token'),
-					name: '',//类型名称
 				},
 				typePid:'',
 				typeName: '',//内容
