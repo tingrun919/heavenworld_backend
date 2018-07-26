@@ -127,6 +127,21 @@
 			<Input v-if="modelAction != 2" v-model="actionDesc" placeholder="请输入"></Input>
 		</Modal>
 		<Modal title="新增" @on-ok="handlePerson" v-model="personShowAdd" class-name="vertical-center-modal">
+			<div class="demo-upload-list" v-for="item in uploadList2">
+				<template v-if="item.status === 'finished'">
+					<img :src="item.url">
+				</template>
+				<template v-else>
+					<Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+				</template>
+			</div>
+			<Upload ref="upload2" :show-upload-list="false" :default-file-list="defaultList2" :on-success="handleSuccess4" :format="['jpg','jpeg','png']"
+			 :max-size="1024" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize1" multiple type="drag" action="http://39.107.78.100:8080/banaworld_admin/User/uploadAll?type=1"
+			 style="display: inline-block;width:58px;">
+				<div style="width: 58px;height:58px;line-height: 58px;">
+					<Icon type="camera" size="20"></Icon>
+				</div>
+			</Upload>
 			<Input v-model="personName" placeholder="请输入名称"></Input>
 		</Modal>
 		<Modal title="新增" @on-ok="handleAddMusic" v-model="showMusicModal" class-name="vertical-center-modal">
@@ -639,12 +654,13 @@
 		data() {
 			return {
 				commentShowAdd: false,//新增控制弹窗
-				uploadmusic:false,
+				uploadmusic: false,
 				modelAction: '',
 				actionDesc: '',
 				actionName: '',
-				longD:'',
-				addressName:'',
+				longD: '',
+				addressName: '',
+				perPortrait: '',
 				showMusicModal: false,
 				modal6: false,
 				modal7: false,
@@ -674,9 +690,11 @@
 				resultData: [],
 				resultData2: [],
 				defaultList: [],
+				defaultList2: [],
 				imgName: '',
 				visible: false,
 				uploadList: [],
+				uploadList2: [],
 				category: [],
 				model13: '',
 				loading1: false,
@@ -794,6 +812,20 @@
 						key: 'perId',
 						width: 80,
 						align: 'center',
+					},
+					{
+						title: '头像',
+						key: 'perPortrait',
+						align: 'center',
+						render: (h, params) => {
+							return h('img', {
+								attrs: {
+									src: params.row.perPortrait,
+									width: 100,
+									height: 100,
+								},
+							})
+						}
 					},
 					{
 						title: '姓名',
@@ -946,7 +978,7 @@
 				const fileList = this.$refs.upload.fileList;
 				this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
 				this.resultValue.panoPicture = ''
-				for(var item of this.$refs.upload.fileList){
+				for (var item of this.$refs.upload.fileList) {
 					this.resultValue.panoPicture = this.resultValue.panoPicture ? this.resultValue.panoPicture + "," + item.url : item.url
 				}
 			},
@@ -963,6 +995,17 @@
 					this.uploadList = this.$refs.upload.fileList;
 				})
 			},
+			handleSuccess4(res, file) {
+				file.url = res.data
+				file.name = file.name
+				this.perPortrait = res.data
+				if (this.$refs.upload2.fileList.length > 1) {
+					this.$refs.upload2.fileList.splice(0, 1);
+				}
+				this.$nextTick(() => {
+					this.uploadList2 = this.$refs.upload2.fileList;
+				})
+			},
 			handleSuccess3(res, file) {
 				this.musicurl = res.data
 				this.uploadmusic = false
@@ -977,6 +1020,12 @@
 				this.$Notice.warning({
 					title: '超出文件大小限制',
 					desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+				});
+			},
+			handleMaxSize1(file) {
+				this.$Notice.warning({
+					title: '超出文件大小限制',
+					desc: '文件 ' + file.name + ' 太大，不能超过 1M。'
 				});
 			},
 			handleBeforeUpload() {
@@ -1053,7 +1102,8 @@
 					token: Cookies.get('token'),
 					perPanoId: this.$route.params.panoramic_id,
 					perUserName: this.personName,
-					perUserType: 2
+					perUserType: 2,
+					perPortrait: this.perPortrait
 				}
 				this.addPersonApi(params).then(() => {
 					this.fetchList()
