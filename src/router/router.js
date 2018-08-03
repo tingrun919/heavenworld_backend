@@ -230,6 +230,16 @@ export const appRouter = [
         children: [
 			{ path: 'allBlessing_index', title: '全部祈福', name: 'allBlessing_index', icon: 'grid', component: () => import('@/views/blessing/blessing.vue') },
         ]
+	},
+	{
+        path: '/lecture',
+        icon: 'grid',
+		name: 'lecture',
+        title: '讲堂管理',
+        component: Main,
+        children: [
+			{ path: 'lecture_index', title: '讲堂管理', name: 'lecture_index', icon: 'grid', component: () => import('@/views/lecture/lecture.vue') },
+        ]
     },
 ];
 

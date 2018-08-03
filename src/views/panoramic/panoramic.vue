@@ -77,21 +77,6 @@
 						label: '未置顶'
 					}
 				],
-
-				cityList: [
-					{
-						value: '全部',
-						label: '全部'
-					},
-					{
-						value: '礼券',
-						label: '礼券'
-					},
-					{
-						value: '现货',
-						label: '现货'
-					},
-				],
 				tableColumns: [  //表头
 					{
 						title: 'ID',
