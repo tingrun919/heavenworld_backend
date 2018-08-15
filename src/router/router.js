@@ -240,6 +240,16 @@ export const appRouter = [
         children: [
 			{ path: 'lecture_index', title: '讲堂管理', name: 'lecture_index', icon: 'grid', component: () => import('@/views/lecture/lecture.vue') },
         ]
+	},
+	{
+        path: '/stencil',
+        icon: 'grid',
+		name: 'stencil',
+        title: '祈福模版管理',
+        component: Main,
+        children: [
+			{ path: 'stencil_index', title: '祈福模版管理', name: 'stencil_index', icon: 'grid', component: () => import('@/views/stencil/stencil.vue') },
+        ]
     },
 ];
 
